@@ -59,7 +59,11 @@ const showGit = (e) => {
 
 ////// Get repo list
 const repoList = (gitUser) => {
-  fetch(`https://api.github.com/users/${gitUser}/repos`)
+  let url = new URL(`https://api.github.com/users/${gitUser}/repos`);
+  url.search = new URLSearchParams({
+    per_page: 100,
+  });
+  fetch(url)
     .then((resp) => {
       return resp.json();
     })
@@ -72,6 +76,7 @@ const repoList = (gitUser) => {
 
 ////// Appending to html
 const showRepoList = (lists) => {
+  document.getElementById("repos-list").innerHTML = `<ol id="repos-list"></ol>`;
   lists.forEach((i) => {
     const ul = document.getElementById("repos-list");
     const li = document.createElement("li");
@@ -86,3 +91,8 @@ const showRepoList = (lists) => {
 document.addEventListener("DOMContentLoaded", () => {
   searchActive();
 });
+
+// //// Search bar
+// document.getElementById("search-repos").addEventListener("click", (e) => {
+//   e.preventDefault();
+// });
